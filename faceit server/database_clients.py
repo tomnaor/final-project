@@ -26,4 +26,7 @@ class Clients:
         return table
 
     def return_pass(self, name):
-        return self.cursor.execute("SELECT hashed_password FROM clients WHERE name = {}".format(name))
+        cur = self.cursor.execute("SELECT hashed_password FROM clients WHERE name=?", (name,))
+        fetch = cur.fetchall()
+        f = fetch[0]
+        return f[0]
