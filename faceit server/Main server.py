@@ -5,13 +5,14 @@ import login
 import re
 import json
 import face_recognition
+import database_go
+import thread
 
 IP = "0.0.0.0"
 PORT = 1234
 LISTEN_NUM = 5
 open_client_sockets = []
 messages_to_send = []
-go_users = {}
 
 
 class Server():
@@ -29,6 +30,8 @@ class Server():
         self.port = port
         self.listen_num = listen_num
         self.server_socket = socket.socket()
+        self.go_users = database_go.Go()
+        thread.start_new_thread(self.thread_go, ())
 
     def server_connection(self):
         """
@@ -67,10 +70,19 @@ class Server():
         res = user.put_in_database()
         return res
 
+    def add_to_go(self, name, emotions):
+        self.go_users.insert(name, emotions)
+
+    def thread_go(self):
+        while True:
+
+
+
     def check_if_client(self):
         while True:
             rlist, wlist, xlist = select.select([self.server_socket] + open_client_sockets,  open_client_sockets, [])
             for current_socket in rlist:
+                print current_socket
                 if current_socket is self.server_socket:
                     print "new client!"
                     (new_socket, address) = self.server_socket.accept()
@@ -80,6 +92,7 @@ class Server():
                         data = current_socket.recv(1024)
                     except socket.error:
                         print "Connection with client closed."
+                        open_client_sockets.remove(current_socket)
                     print data
                     if data == "":
                         open_client_sockets.remove(current_socket)
@@ -123,13 +136,14 @@ class Server():
                             print "The emotion is: " + res
                         current_socket.send(res)
                     elif "GO" in data:
-                        regex = r"Go:(.*)"
+                        regex = r"GO:(.*)"
                         match = re.search(regex, data)
                         this_data = match.group(1)
-                        emotions = json.loads(this_data)
-                        go_users[current_socket] = emotions
-                        # for user, emotions in go_users.iteritems():
-                        #     if emotions[1] ==
+                        emotions_dict = json.loads(this_data)
+                        user_name = emotions_dict.items()[0][0]
+                        emotions = emotions_dict.items()[0][1]
+                        emotions_str = repr(emotions)
+                        self.add_to_go(user_name, emotions_str)
                     else:
                         pass
 

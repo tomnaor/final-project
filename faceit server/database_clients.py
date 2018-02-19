@@ -6,10 +6,10 @@ class Clients:
         self.conn = sqlite3.connect("clients.db")
         self.cursor = self.conn.cursor()
 
-        self.cursor.execute("CREATE TABLE IF NOT EXISTs clients "
+        self.cursor.execute("CREATE TABLE IF NOT EXISTS clients "
                             "(ip_address TEXT, name TEXT PRIMARY KEY, hashed_password TEXT, Email TEXT)")
 
-    def Insert(self, ip, name, password, email):
+    def insert(self, ip, name, password, email):
         try:
             self.cursor.execute("INSERT INTO clients VALUES "
                                 "('{}', '{}', '{}', '{}')".format(ip, name, password, email))

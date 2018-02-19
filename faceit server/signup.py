@@ -19,5 +19,5 @@ class SignUp():
                                        self.password.encode()).hexdigest() + ':' + salt
 
     def put_in_database(self):
-        res = self.database.Insert(self.ip_address, self.username, self.password, self.email)
+        res = self.database.insert(self.ip_address, self.username, self.password, self.email)
         return res
