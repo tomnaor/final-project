@@ -39,8 +39,8 @@
 
 
     <LinearLayout
-        android:layout_width="395dp"
-        android:layout_height="140dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:orientation="vertical"
@@ -49,8 +49,7 @@
         tools:layout_editor_absoluteY="8dp"
         tools:layout_editor_absoluteX="8dp"
         android:layout_above="@+id/linearLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center">
+        android:layout_centerHorizontal="true">
 
         <EditText
 
@@ -62,7 +61,8 @@
             android:textSize="20dp"
             android:textColorHint="#ffff"
             android:textColor="#ffff"
-            android:maxLines="1"/>
+            android:maxLines="1"
+            android:layout_marginTop="100dp"/>
         <View
             android:layout_gravity="center"
             android:layout_width="320dp"
@@ -115,9 +115,10 @@
                 android:layout_width="330dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="60dp"
                 android:background="@drawable/login"
                 android:paddingLeft="20dp"
+
                 android:paddingRight="20dp"
                 android:textStyle="normal" />
 

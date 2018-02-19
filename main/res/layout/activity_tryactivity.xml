@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context="org.eliconcepts.geekking.MainActivity">
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="32dp"
+        app:srcCompat="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        app:srcCompat="@mipmap/logo"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="61dp" />
+
+    <EditText
+        android:id="@+id/editname"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:hint="Username"
+        android:textColorHint="#ffff"
+        android:background="#07000000"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/editpass"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:hint="Password"
+        android:textColorHint="#ffff"
+        android:background="#07000000"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:layout_below="@+id/editname"
+        android:layout_alignStart="@+id/editname"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/imglogin"
+        android:layout_width="300dp"
+        android:layout_height="32dp"
+        android:layout_alignStart="@+id/imgsignup"
+        android:layout_below="@+id/editpass"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/loginpress"
+        android:fontFamily="sans-serif"
+        android:text="Login"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        android:textSize="18dp" />
+
+    <Button
+        android:id="@+id/imgsignup"
+        android:layout_width="300dp"
+        android:layout_height="32dp"
+        android:layout_below="@+id/imglogin"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/signuppress"
+        android:fontFamily="sans-serif"
+        android:text="Sign Up"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        android:textSize="18dp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome!"
+        android:textColor="#ffff"
+        android:textSize="16dp"
+        android:layout_above="@+id/textView5"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="communicate with people all over the"
+        android:textColor="#ffff"
+        android:textSize="14dp"
+        android:layout_above="@+id/textView6"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="world with your emotions!"
+        android:textColor="#ffff"
+        android:textSize="14dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_marginBottom="16dp" />
+
+
+</RelativeLayout>
