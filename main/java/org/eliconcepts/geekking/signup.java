@@ -11,10 +11,11 @@ import android.widget.Toast;
 
 public class signup extends AppCompatActivity {
     private Button b_signup;
-    private EditText editname, editmail, editpass;
+    private EditText editname, editmail, editpass, repass;
     private String GetEditText;
     private String GetEditPass;
     private String GetEditMail;
+    private String GetEditConf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class signup extends AppCompatActivity {
         editname = (EditText) findViewById(R.id.editname);
         editpass = (EditText) findViewById(R.id.editpass);
         editmail = (EditText) findViewById(R.id.mail);
+        repass = (EditText) findViewById(R.id.Confpass);
 
         b_signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,8 +33,10 @@ public class signup extends AppCompatActivity {
                 GetEditText = editname.getText().toString();
                 GetEditPass = editpass.getText().toString();
                 GetEditMail = editmail.getText().toString();
+                GetEditConf = repass.getText().toString();
+
                 if (TextUtils.isEmpty(GetEditText) || TextUtils.isEmpty(GetEditPass)
-                        || TextUtils.isEmpty(GetEditMail)) {
+                        || TextUtils.isEmpty(GetEditMail) || TextUtils.isEmpty(GetEditConf)) {
                     Toast.makeText(signup.this, "Please enter all the fields!",
                             Toast.LENGTH_LONG).show();
                 } else {

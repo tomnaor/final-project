@@ -1,9 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="org.eliconcepts.geekking.WelcomeActivity">
+    <TextureView
+        android:id="@+id/texture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"/>
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/btn_takepicture"
+        android:layout_width="300dp"
+        android:layout_height="32dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/signuppress"
+        android:fontFamily="sans-serif"
+        android:text="Face It!"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        android:textSize="18dp"
+        android:textStyle="normal"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/background" />
+</RelativeLayout>

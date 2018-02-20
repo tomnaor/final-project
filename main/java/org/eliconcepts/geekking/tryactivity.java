@@ -5,15 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
-
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.Socket;
 
 public class tryactivity extends AppCompatActivity
 {
