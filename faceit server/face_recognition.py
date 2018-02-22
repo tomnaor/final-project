@@ -1,5 +1,6 @@
 import requests
 import operator
+from PIL import Image
 
 class Face():
     def __init__(self, data_face):
@@ -26,10 +27,13 @@ class Face():
             sorted_face = sorted(t_face.items(), key=operator.itemgetter(1), reverse=True)
             return sorted_face[0][0]
 
-# if __name__ == "__main__":
-#     file_data = open("image.jpg", "rb")
-#     face_data = file_data.read()
-#     file_data.close()
-#     face = Face(face_data)
-#     res = face.recognition()
-#     print res
+if __name__ == "__main__":
+    img = Image.open("image.jpg")
+    img2 = img.rotate(180)  # rotate
+    img2.save("img2.jpg")
+    file_data = open("img2.jpg", "rb")
+    face_data = file_data.read()
+    file_data.close()
+    face = Face(face_data)
+    res = face.recognition()
+    print res
