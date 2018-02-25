@@ -7,12 +7,12 @@ class Clients:
         self.cursor = self.conn.cursor()
 
         self.cursor.execute("CREATE TABLE IF NOT EXISTS clients "
-                            "(ip_address TEXT, name TEXT PRIMARY KEY, hashed_password TEXT, Email TEXT)")
+                            "(name TEXT PRIMARY KEY, hashed_password TEXT, Email TEXT)")
 
-    def insert(self, ip, name, password, email):
+    def insert(self, name, password, email):
         try:
             self.cursor.execute("INSERT INTO clients VALUES "
-                                "('{}', '{}', '{}', '{}')".format(ip, name, password, email))
+                                "('{}', '{}', '{}')".format(name, password, email))
             self.conn.commit()
             return True  # added successfully
         except sqlite3.IntegrityError:

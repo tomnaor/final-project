@@ -1,30 +1,32 @@
-import httplib, urllib, base64
+import database_go
 import json
+import socket
 
-headers = {
-    # Request headers. Replace the placeholder key below with your subscription key.
-    'Content-Type': 'application/octet-stream',
-    'Ocp-Apim-Subscription-Key': '2d0e288ea1e447d28781858a409e4fab',
-}
 
-params = urllib.urlencode({
-})
+def main():
+    while True:
+        a = database_go.Go()
+        data = a.return_data()
+        if data != "}":
+            data_dict = json.loads(data)
+            for key, value in data_dict.iteritems():
+                check = False
+                for key2, value2 in data_dict.iteritems():
+                    if key != key2 and value[::-1] == value2:
+                        del data_dict[key]
+                        del data_dict[key2]
+                        a.delete_row(key)
+                        a.delete_row(key2)
+                        check = True
+                        s = socket.socket()
+                        s.connect(("127.0.0.1", 1234))
+                        s.send("Thread: " + "{\"" + key + "\": \"" + value[0] + "\", \"" + key2 + "\": \"" +
+                               value2[0] + "\"}")
+                        s.close()
+                        break
+                if check:
+                    break
 
-# Replace the example URL below with the URL of the image you want to analyze.
-body = r"{ 'url': 'C:\Heights\Documents\Projects\faceit\man.jpg' }"
 
-try:
-    # NOTE: You must use the same region in your REST call as you used to obtain your subscription keys.
-    #   For example, if you obtained your subscription keys from westcentralus, replace "westus" in the 
-    #   URL below with "westcentralus".
-    conn = httplib.HTTPSConnection('westus.api.cognitive.microsoft.com')
-    conn.request("POST", "/emotion/v1.0/recognize?%s" % params, body, headers)
-    response = conn.getresponse()
-    data = response.read()
-    # 'data' contains the JSON data. The following formats the JSON data for display.
-    parsed = json.loads(data)
-    print ("Response:")
-    print (json.dumps(parsed, sort_keys=True, indent=2))
-    conn.close()
-except Exception as e:
-    print(e)
+if __name__ == '__main__':
+    main()

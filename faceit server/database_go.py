@@ -33,6 +33,7 @@ class Go:
 
     def delete_row(self, name):
         self.cursor.execute("DELETE FROM Go WHERE name=?", (name,))
+        self.conn.commit()
 
 
 

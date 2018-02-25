@@ -4,8 +4,7 @@ import database_clients
  
 
 class SignUp():
-    def __init__(self, ip_address, username, password, email):
-        self.ip_address = ip_address
+    def __init__(self, username, password, email):
         self.username = username
         self.password = password
         self.hash_password()
@@ -19,5 +18,5 @@ class SignUp():
                                        self.password.encode()).hexdigest() + ':' + salt
 
     def put_in_database(self):
-        res = self.database.insert(self.ip_address, self.username, self.password, self.email)
+        res = self.database.insert(self.username, self.password, self.email)
         return res
