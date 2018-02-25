@@ -26,7 +26,7 @@
         </activity>
         <activity android:name=".WelcomeActivity"/>
         <activity android:name=".signup"/>
-        <activity android:name=".tryactivity"/>
+        <activity android:name=".tryactivity"/>/>
 
     </application>
 

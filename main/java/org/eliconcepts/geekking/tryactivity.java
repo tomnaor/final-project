@@ -3,6 +3,7 @@ package org.eliconcepts.geekking;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.sip.SipAudioCall;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +21,8 @@ public class tryactivity extends AppCompatActivity
     private EditText editname, editpass;
     private String GetEditText;
     private String GetEditPass;
-    private static Client my_client;
+    public Client my_client;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -36,55 +38,37 @@ public class tryactivity extends AppCompatActivity
             public void onClick(View view) {
                 GetEditText = editname.getText().toString();
                 GetEditPass = editpass.getText().toString();
-                if(TextUtils.isEmpty(GetEditText) || TextUtils.isEmpty(GetEditPass) )
-                {
+                if (TextUtils.isEmpty(GetEditText) || TextUtils.isEmpty(GetEditPass)) {
                     Toast.makeText(tryactivity.this, "Please enter username or password",
                             Toast.LENGTH_LONG).show();
-                }
-                else {
+                } else {
 
                     String msg;
-                    Client myClient = new Client(tryactivity.this);
-                    msg = myClient.login(GetEditText, GetEditPass);
-                    myClient.execute(msg);
+                    Client my_client = new Client(tryactivity.this);
+                    msg = my_client.login(GetEditText, GetEditPass);
+                    my_client.execute(msg);
 
 
-                    String data = myClient.message;
-                    if(data.equals("True"))
-                    {
-                        Intent intent = new Intent(tryactivity.this, WelcomeActivity.class);
+                }
+
+                b_signup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        GetEditText = editname.getText().toString();
+                        GetEditPass = editpass.getText().toString();
+                        if (!TextUtils.isEmpty(GetEditText) || !TextUtils.isEmpty(GetEditPass)) {
+                            Toast.makeText(tryactivity.this, "You shouldn't enter anything yet",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        Intent intent = new Intent(tryactivity.this, signup.class);
                         startActivity(intent);
+
                     }
-                    else {
-                        String str = "Wrong Username or Password";
-                        AlertDialog.Builder builder = new AlertDialog.Builder(tryactivity.this);
-                        builder.setMessage(str)
-                                .setPositiveButton(str, new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                    }
-                                });
-                        builder.create();
-                    }
-
-
-                }
-            }
-        });
-        b_signup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                GetEditText = editname.getText().toString();
-                GetEditPass = editpass.getText().toString();
-                if (!TextUtils.isEmpty(GetEditText) || !TextUtils.isEmpty(GetEditPass)) {
-                    Toast.makeText(tryactivity.this, "You shouldn't enter anything yet",
-                            Toast.LENGTH_LONG).show();
-                }
-                Intent intent = new Intent(tryactivity.this, signup.class);
-                startActivity(intent);
-
+                });
             }
         });
     }
 }
+
 
 
