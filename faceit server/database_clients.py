@@ -30,3 +30,12 @@ class Clients:
         fetch = cur.fetchall()
         f = fetch[0]
         return f[0]
+
+    def check_if_in_database(self, name):
+        try:
+            cur = self.cursor.execute("SELECT hashed_password FROM clients WHERE name=?", (name,))
+            fetch = cur.fetchall()
+            f = fetch[0]
+            return True
+        except IndexError:
+            return False

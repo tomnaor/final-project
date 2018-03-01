@@ -6,7 +6,10 @@ import re
 import json
 import face_recognition
 import database_go
+import database_clients
 import thread
+from go_handler import run_go
+import client_chat
 
 IP = "0.0.0.0"
 PORT = 1234
@@ -32,7 +35,7 @@ class Server():
         self.listen_num = listen_num
         self.server_socket = socket.socket()
         self.go_users = database_go.Go()
-        # thread.start_new_thread(self.thread_go, ())
+        thread.start_new_thread(run_go, ())
 
     def server_connection(self):
         """
@@ -129,26 +132,26 @@ class Server():
                                 open_sockets_names[current_socket] = username  # update name of user -
                                 # need to check if it is working
                                 print "added successfully"
-                                current_socket.send("True")
+                                current_socket.send("SignUpTrue\r\n")
                             else:
                                 print "this name was already taken"
-                                current_socket.send("False")
+                                current_socket.send("SignUpFalse\r\n")
                         except Exception as e:
                             print e.args
-                            current_socket.send("False")
+                            current_socket.send("SignUpFalse\r\n")
                     elif "Login" in data:  # 'Login: {"username": "tom", "password": "hashed_pass"}'
                         try:
                             res, username = self.login(data)
                             if res:
                                 open_sockets_names[current_socket] = username
                                 print "correct password"
-                                current_socket.send("True\r\n")
+                                current_socket.send("LoginTrue\r\n")
                             else:
                                 print "not the same password"
-                                current_socket.send("False\r\n")
+                                current_socket.send("LoginFalse\r\n")
                         except Exception as e:
                             print e.args
-                            current_socket.send("False")
+                            current_socket.send("LoginFalse\r\n")
                     elif "Image_face" in data:  # 'Image_face: {"data": "0010101010101001010100101"}'
                         regex = r"Image_face:(.*)"
                         match = re.search(regex, data)
@@ -169,13 +172,22 @@ class Server():
                         this_data = match.group(1)
                         emotions_dict = json.loads(this_data)
                         user_name = emotions_dict.items()[0][0]
+                        access = True
                         try:
-                            print open_sockets_names[current_socket]
-                        except KeyError:
-                            print "this client was already signed up or logged in"
-                            open_sockets_names[current_socket] = user_name
-                        emotions = emotions_dict.items()[0][1]
-                        self.add_to_go(user_name, emotions[0], emotions[1])
+                            a_data = database_clients.Clients()
+                            a_data.return_pass(user_name)
+                        except IndexError:
+                            access = False
+                            print "this client does not exists"
+                            print self.go_users.return_data()
+                        if access:
+                            try:
+                                print open_sockets_names[current_socket]
+                            except KeyError:
+                                print "this client was already signed up or logged in"
+                                open_sockets_names[current_socket] = user_name
+                            emotions = emotions_dict.items()[0][1]
+                            self.add_to_go(user_name, emotions[0], emotions[1])
                     elif "Thread" in data:
                         try:
                             regex = r"Thread:(.*)"
@@ -185,7 +197,6 @@ class Server():
                             user_name1 = go_dict.items()[0][0]
                             emotion1 = go_dict.items()[0][1]
                             user_name2 = go_dict.items()[1][0]
-                            print type(user_name2)
                             emotion2 = go_dict.items()[1][1]
                             for key, value in open_sockets_names.iteritems():
                                 if user_name1 == value:
@@ -194,6 +205,10 @@ class Server():
                                     key.send("[\"" + user_name1 + "\"  ," + emotion1 + "\"]")
                         except Exception as e:
                             print e.args
+                    elif "Chat" in data:
+                        chat = client_chat.Chat(data)
+                        receiver_name, msg = chat.build_message()
+                        print msg
                     else:
                         pass
 
