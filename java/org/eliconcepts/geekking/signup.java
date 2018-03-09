@@ -43,9 +43,10 @@ public class signup extends AppCompatActivity {
 
                     if (GetEditConf.equals(GetEditPass)){
                         String msg;
-                        Client my_client = new Client(signup.this);
+                        MyTaskParams.Client my_client = new MyTaskParams.Client(signup.this);
                         msg = my_client.signup(GetEditText, GetEditPass, GetEditMail);
-                        my_client.execute(msg);
+                        MyTaskParams params = new MyTaskParams(msg, null);
+                        my_client.execute(params);
                     }
                     else {
                         Toast.makeText(signup.this, "Please correct your password",
