@@ -28,6 +28,8 @@
         <activity android:name=".signup"/>
         <activity android:name=".tryactivity"/>
         <activity android:name=".chatHistory" />
+        <activity android:name=".loadingChat"/>
+        <activity android:name="Chat"/>
 
     </application>
 
