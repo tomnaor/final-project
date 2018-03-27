@@ -1,8 +1,11 @@
 package org.eliconcepts.geekking;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.ImageFormat;
 import android.graphics.SurfaceTexture;
@@ -17,7 +20,9 @@ import android.hardware.camera2.TotalCaptureResult;
 import android.hardware.camera2.params.StreamConfigurationMap;
 import android.media.Image;
 import android.media.ImageReader;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -31,18 +36,24 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
+import com.felipecsl.gifimageview.library.GifImageView;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -50,6 +61,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private Button takePictureButton;
     private Button chatButton;
     private TextureView textureView;
+    private ImageButton settings;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     static {
@@ -71,9 +83,11 @@ public class WelcomeActivity extends AppCompatActivity {
     private boolean mFlashSupported;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
+    static TextView counter;
+    static GifImageView loadingGif;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         textureView = (TextureView) findViewById(R.id.texture);
@@ -81,10 +95,30 @@ public class WelcomeActivity extends AppCompatActivity {
         textureView.setSurfaceTextureListener(textureListener);
         takePictureButton = (Button) findViewById(R.id.btn_takepicture);
         assert takePictureButton != null;
+        settings = (ImageButton) findViewById(R.id.settings);
+        counter = (TextView) findViewById(R.id.counter);
+        loadingGif = (GifImageView) findViewById(R.id.loadingGif);
+        Gif gif = new Gif(loadingGif);
+        gif.execute("https://thumbs.gfycat.com/LivelyBrilliantAllensbigearedbat-size_restricted.gif");
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                takePicture();
+                CountDownTimer myCountDown = new CountDownTimer(3000, 100) {
+                    public void onTick(long millisUntilFinished) {
+                        //update the UI with the new count
+                        String a = "seconds remaining: " + (millisUntilFinished / 1000 + 1);
+                        counter.setText(String.format(a, ""));
+                    }
+
+                    public void onFinish() {
+                        String text = "Captured!";
+                        counter.setText(String.format(text, ""));
+                        takePicture();
+                        loadingGif.startAnimation();
+                        loadingGif.setVisibility(View.VISIBLE);
+                    }
+                };
+                myCountDown.start();
             }
         });
         chatButton = (Button) findViewById(R.id.chat_button);
@@ -94,6 +128,34 @@ public class WelcomeActivity extends AppCompatActivity {
                 Intent intent = new Intent(WelcomeActivity.this, chatHistory.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
+            }
+        });
+        settings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(WelcomeActivity.this);
+                alertDialogBuilder.setTitle("Settings");
+                alertDialogBuilder
+                        .setMessage("Do you want to log out?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes, I'm Sure", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                SharedPreferences sp = getSharedPreferences("Login", MODE_PRIVATE);
+                                SharedPreferences.Editor Ed=sp.edit();
+                                Ed.putString("Unm", "0" );
+                                Ed.putString("Psw", "0");
+                                Ed.apply();
+                                Intent intent = new Intent(WelcomeActivity.this, tryactivity.class);
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
     }
@@ -215,7 +277,7 @@ public class WelcomeActivity extends AppCompatActivity {
                 }
 
                 private void save(byte[] bytes) throws IOException {
-                    MyTaskParams params = new MyTaskParams(null, bytes);
+                    MyTaskParams params = new MyTaskParams(null, bytes, null);
                     MyTaskParams.Client my_client = new MyTaskParams.Client(WelcomeActivity.this);
                     my_client.execute(params);
                 }

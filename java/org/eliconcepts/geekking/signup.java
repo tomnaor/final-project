@@ -1,6 +1,7 @@
 package org.eliconcepts.geekking;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -45,7 +46,7 @@ public class signup extends AppCompatActivity {
                         String msg;
                         MyTaskParams.Client my_client = new MyTaskParams.Client(signup.this);
                         msg = my_client.signup(GetEditText, GetEditPass, GetEditMail);
-                        MyTaskParams params = new MyTaskParams(msg, null);
+                        MyTaskParams params = new MyTaskParams(msg, null, GetEditText);
                         my_client.execute(params);
                     }
                     else {

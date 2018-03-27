@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -25,6 +26,7 @@ public class loadingactivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.loading);
+
         imgview = (ImageView) findViewById(R.id.logo);
         img2 = (ImageView) findViewById(R.id.faceit);
         /* New Handler to start the Menu-Activity 
@@ -33,11 +35,22 @@ public class loadingactivity extends Activity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(loadingactivity.this, tryactivity.class);
-                loadingactivity.this.startActivity(mainIntent);
-                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                loadingactivity.this.finish();
+                //check if user is real - verify of username and password.
+                SharedPreferences sp1 = getApplicationContext().getSharedPreferences("Login", MODE_PRIVATE);
+                String unm = sp1.getString("Unm", "0");
+                String pass = sp1.getString("Psw", "0");
+                if (unm.contains("true") && pass.equals("true")){
+                    Intent intent = new Intent(loadingactivity.this, WelcomeActivity.class);
+                    loadingactivity.this.startActivity(intent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    loadingactivity.this.finish();
+                }
+                else {
+                    Intent mainIntent = new Intent(loadingactivity.this, tryactivity.class);
+                    loadingactivity.this.startActivity(mainIntent);
+                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+                    loadingactivity.this.finish();
+                }
             }
         }, SPLASH_DISPLAY_LENGTH);
     }
