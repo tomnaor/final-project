@@ -1,18 +1,19 @@
 import sqlite3
 import json
 
+
 class Go:
     def __init__(self):
         self.conn = sqlite3.connect("Go.db")
         self.cursor = self.conn.cursor()
 
         self.cursor.execute("CREATE TABLE IF NOT EXISTS Go "
-                            "(name TEXT PRIMARY KEY, my_emotion TEXT, i_want TEXT)")
+                            "(name TEXT PRIMARY KEY, my_emotion TEXT, i_want TEXT, time INTEGER)")
 
     def insert(self, name, my_emo, i_want_emo):
         try:
             self.cursor.execute("INSERT INTO Go VALUES "
-                                "('{}', '{}', '{}')".format(name, my_emo, i_want_emo))
+                                "('{}', '{}', '{}', {})".format(name, my_emo, i_want_emo, 900))
             self.conn.commit()
             return True  # added successfully
         except sqlite3.IntegrityError:
@@ -24,6 +25,16 @@ class Go:
             table += '\"' + row[0] + '\"' + ": [" + '\"' + row[1] + '\"' + ", " + '\"' + row[2] + "\"], "
         self.conn.commit()
         return table[:-2] + "}"
+
+    def return_time(self, name):
+        cur = self.cursor.execute("SELECT time FROM Go WHERE name=?", (name,))
+        fetch = cur.fetchall()
+        f = fetch[0]
+        return f[0]
+
+    def update_time(self, name, time):
+        self.cursor.execute("UPDATE Go SET time=? WHERE name=?", (time, name,))
+        self.conn.commit()
 
     def return_want(self, name):
         cur = self.cursor.execute("SELECT i_want FROM Go WHERE name=?", (name,))

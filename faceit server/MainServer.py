@@ -35,7 +35,7 @@ class Server():
         self.listen_num = listen_num
         self.server_socket = socket.socket()
         self.go_users = database_go.Go()
-        thread.start_new_thread(run_go, ())
+        # thread.start_new_thread(run_go, ())
 
     def server_connection(self):
         """
@@ -98,6 +98,9 @@ class Server():
                 if check:
                     break
 
+    def handle_msg(self, msg):
+        return msg + "\r\n"
+
     def check_if_client(self):
         while True:
             rlist, wlist, xlist = select.select([self.server_socket] + open_client_sockets,  open_client_sockets, [])
@@ -116,6 +119,7 @@ class Server():
                             del open_sockets_names[current_socket]
                         except Exception as e:
                             print e.args
+                    # if "Image_face" not in data:
                     print data
                     if data == "":
                         try:
@@ -132,79 +136,110 @@ class Server():
                                 open_sockets_names[current_socket] = username  # update name of user -
                                 # need to check if it is working
                                 print "added successfully"
-                                current_socket.send("SignUpTrue\r\n")
+                                output = "SignUpTrue"
+                                current_socket.send(self.handle_msg(output))
                             else:
                                 print "this name was already taken"
-                                current_socket.send("SignUpFalse\r\n")
+                                output = "SignUpFalse"
+                                current_socket.send(self.handle_msg(output))
                         except Exception as e:
                             print e.args
-                            current_socket.send("SignUpFalse\r\n")
+                            output = "SignUpFalse"
+                            current_socket.send(self.handle_msg(output))
                     elif "Login" in data:  # 'Login: {"username": "tom", "password": "hashed_pass"}'
                         try:
                             res, username = self.login(data)
                             if res:
                                 open_sockets_names[current_socket] = username
                                 print "correct password"
-                                current_socket.send("LoginTrue\r\n")
+                                output = "LoginTrue"
+                                current_socket.send(self.handle_msg(output))
                             else:
                                 print "not the same password"
-                                current_socket.send("LoginFalse\r\n")
+                                output = "LoginFalse"
+                                current_socket.send(self.handle_msg(output))
                         except Exception as e:
                             print e.args
-                            current_socket.send("LoginFalse\r\n")
-                    elif "Image_face" in data:  # 'Image_face: {"data": "0010101010101001010100101"}'
-                        regex = r"Image_face:(.*)"
-                        match = re.search(regex, data)
-                        f_dict = match.group(1)
-                        face_dict = json.loads(f_dict)
-                        face_data = face_dict["data"]
-                        face = face_recognition.Face(face_data)
-                        res = face.recognition()
-                        if "False" in res:
-                            print res
-                        else:
-                            print "successful face recognition!"
-                            print "The emotion is: " + res
-                        current_socket.send(res)
-                    elif "Go" in data:  # 'Go: {"tom": ["my_emotion", "the_emotion_i_want"]}'
-                        regex = r"Go:(.*)"
-                        match = re.search(regex, data)
-                        this_data = match.group(1)
-                        emotions_dict = json.loads(this_data)
-                        user_name = emotions_dict.items()[0][0]
-                        access = True
+                            output = "LoginFalse"
+                            current_socket.send(self.handle_msg(output))
+                    elif "Image_face" in data:  # 'Image_face'
                         try:
-                            a_data = database_clients.Clients()
-                            a_data.return_pass(user_name)
-                        except IndexError:
-                            access = False
-                            print "this client does not exists"
-                            print self.go_users.return_data()
-                        if access:
-                            try:
-                                print open_sockets_names[current_socket]
-                            except KeyError:
-                                print "this client was already signed up or logged in"
-                                open_sockets_names[current_socket] = user_name
-                            emotions = emotions_dict.items()[0][1]
-                            self.add_to_go(user_name, emotions[0], emotions[1])
-                    elif "Thread" in data:
+                            regex = r"Image_face:(.*)"
+                            match = re.search(regex, data)
+                            size = match.group(1)
+                            print "size:" + size
+                            data = current_socket.recv(int(size))
+                            while int(size) != len(data):
+                                data += current_socket.recv(int(size))
+                            face = face_recognition.Face(data)
+                            res = face.recognition()
+                            if "False" in res:
+                                print res
+                                output = "ImageFalse"
+                                current_socket.send(self.handle_msg(output))
+                            else:
+                                print "successful face recognition!"
+                                print "The emotion is: " + res
+                                output = "Emotion: " + res
+                                current_socket.send(self.handle_msg(output))
+                        except Exception as e:
+                            print e.args
+                            output = "ImageFalse"
+                            current_socket.send(self.handle_msg(output))
+                    elif "GoChat" in data:  # 'GoChat: {"tom": ["my_emotion", "the_emotion_i_want"]}'
                         try:
-                            regex = r"Thread:(.*)"
+                            regex = r"GoChat:(.*)"
                             match = re.search(regex, data)
                             this_data = match.group(1)
-                            go_dict = json.loads(this_data)
-                            user_name1 = go_dict.items()[0][0]
-                            emotion1 = go_dict.items()[0][1]
-                            user_name2 = go_dict.items()[1][0]
-                            emotion2 = go_dict.items()[1][1]
-                            for key, value in open_sockets_names.iteritems():
-                                if user_name1 == value:
-                                    key.send("[\"" + user_name2 + "\"," + emotion2 + "\"]")
-                                if user_name2 == value:
-                                    key.send("[\"" + user_name1 + "\"  ," + emotion1 + "\"]")
+                            emotions_dict = json.loads(this_data)
+                            user_name = emotions_dict.items()[0][0]
+                            access = True
+                            try:
+                                a_data = database_clients.Clients()
+                                a_data.return_pass(user_name)
+                            except IndexError:
+                                access = False
+                                print "this client does not exists"
+                                print self.go_users.return_data()
+                            if access:
+                                try:
+                                    print open_sockets_names[current_socket]
+                                except KeyError:
+                                    print "this client was already signed up or logged in"
+                                    open_sockets_names[current_socket] = user_name
+                                emotions = emotions_dict.items()[0][1]
+                                self.add_to_go(user_name, emotions[0], emotions[1])
                         except Exception as e:
                             print e.args
+                            output = "GoFalse"
+                            current_socket.send(self.handle_msg(output))
+                    elif "Thread" in data:
+                        if "ThreadNo" in data:
+                            user_name3 = data[10:]
+                            print user_name3
+                            for key, value in open_sockets_names.iteritems():
+                                if user_name3 == value:
+                                    output = "ThreadFalse"
+                                    key.send(self.handle_msg(output))
+                        else:
+                            try:
+                                regex = r"Thread:(.*)"
+                                match = re.search(regex, data)
+                                this_data = match.group(1)
+                                go_dict = json.loads(this_data)
+                                user_name1 = go_dict.items()[0][0]
+                                emotion1 = go_dict.items()[0][1]
+                                user_name2 = go_dict.items()[1][0]
+                                emotion2 = go_dict.items()[1][1]
+                                for key, value in open_sockets_names.iteritems():
+                                    if user_name1 == value:
+                                        output = "Thread: [\"" + user_name2 + "\"," + emotion2 + "\"]"
+                                        key.send(self.handle_msg(output))
+                                    if user_name2 == value:
+                                        output = "Thread: [\"" + user_name1 + "\"  ," + emotion1 + "\"]"
+                                        key.send(self.handle_msg(output))
+                            except Exception as e:
+                                print e.args
                     elif "Chat" in data:
                         chat = client_chat.Chat(data)
                         receiver_name, msg = chat.build_message()
