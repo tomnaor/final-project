@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">GeekKing</string>
+    <string name="take_picture">Take picture</string>
+    <string name="chat_item">Chat</string>
+    <string name="music_item">Music</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="explain_music">Press this button and get your playlist with your current emotion!</string>
+    <string name="explain_chat">Press this button to communicate with people all over the world with your current emotion!</string>
+    <string name="welcome_explain">For finding out what is your emotion press this button and look on your selfie camera:)</string>
+</resources>
+

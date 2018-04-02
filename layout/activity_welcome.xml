@@ -9,98 +9,64 @@
     <TextureView
         android:id="@+id/texture"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_alignParentTop="true"/>
-
-
-    <Button
-        android:id="@+id/btn_takepicture"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/main_button"
-        android:fontFamily="sans-serif"
-        android:textAllCaps="false"
-        android:textColor="#ffff"
-        android:textSize="18dp"
-        android:textStyle="normal" />
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"/>
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffff"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:background= "@drawable/background3"/>
 
     <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btn_takepicture"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/faceit_title_button"
-        android:layout_marginBottom="-35dp"/>
-
-    <ImageView
-        android:id="@+id/bar"
+        android:id="@+id/waves"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/bar"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-35dp"/>
+        android:layout_height="170dp"
+        android:background="@drawable/wave4"/>
 
     <ImageView
-        android:layout_width="70dp"
-        android:layout_height="19dp"
-        android:background="@drawable/faceit_bar_button_faceit"
-        android:layout_alignRight="@+id/bar"
-        android:layout_marginRight="48dp"
+        android:id="@+id/waves2"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="13dp"
-        android:id="@+id/button2" />
+        android:background="@drawable/wave5"/>
 
     <Button
-        android:id="@+id/chat_button"
-        android:layout_width="66dp"
-        android:layout_height="18.2dp"
-        android:layout_alignLeft="@+id/bar"
-        android:layout_marginLeft="48dp"
-        android:background="@drawable/chat_bar_button_faceit"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="14dp"/>
+        android:id="@+id/btn_takepicture"
+        android:layout_width="145dp"
+        android:layout_height="35dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+         android:background="@drawable/faceit_button"
+        android:fontFamily="sans-serif"
+        android:text="What is my emotion?"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        android:textSize="12.5dp"
+        android:textStyle="bold"/>
 
     <TextView
-        android:id="@+id/counter"
-        android:layout_width="wrap_content"
+        android:layout_width="275dp"
+        android:layout_height="40dp"
+        android:layout_above="@+id/waves2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:text="@string/welcome_explain"
+        android:textColor="#80FFFFFF"
+        android:textSize="14dp" />
+
+    <TextView
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn_takepicture"
+        android:text="Just Face It!"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="44dp"
+        android:layout_above="@+id/btn_takepicture"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:textAllCaps="false"
-        android:textSize="20dp"
-        android:textStyle="bold" />
-
-    <com.felipecsl.gifimageview.library.GifImageView
-        android:id="@+id/loadingGif"
-        android:layout_width="80dp"
-        android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/counter"
-        android:layout_marginTop="12dp"
-
+        android:layout_marginBottom="20dp"
         />
 
-    <ImageButton
-        android:id="@+id/settings"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@drawable/settings"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight = "12dp"
-        android:layout_marginTop="12dp"
-        />
+
 
 
 

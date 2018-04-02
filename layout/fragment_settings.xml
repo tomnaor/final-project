@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#000000"/>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:title="Settings" />
+
+    <ListView
+        android:layout_below="@+id/title"
+        android:id="@+id/simpleListView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
+        tools:context="abhiandroid.com.listexample.MainActivity">
+    </ListView>
+
+    <ImageView
+        android:id="@+id/faceit"
+        android:layout_width="140dp"
+        android:layout_height="45dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/logo"
+        android:layout_below="@+id/simpleListView"
+        android:layout_marginBottom="12dp"/>
+
+
+
+</RelativeLayout>

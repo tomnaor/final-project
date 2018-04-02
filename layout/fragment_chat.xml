@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/waves"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:background="@drawable/wave2"/>
+
+    <ImageView
+        android:id="@+id/global"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_alignEnd="@+id/btn_chat_nav"
+        android:background="@drawable/global"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="80dp" />
+
+    <TextView
+        android:layout_width="120dp"
+        android:layout_height="175dp"
+        android:layout_alignTop="@+id/global"
+        android:layout_marginEnd="5dp"
+        android:layout_alignStart="@+id/btn_chat_nav"
+        android:layout_toStartOf="@+id/global"
+        android:lineSpacingExtra="3sp"
+        android:text="@string/explain_chat"
+        android:textAlignment="center"
+        android:textAllCaps="false"
+        android:textColor="#C9C9C9"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/btn_chat_nav"
+        android:layout_width="215dp"
+        android:layout_height="32dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="90dp"
+        android:background="@drawable/chat_button_nav"
+        android:fontFamily="sans-serif"
+        android:text="Chat!"
+        android:textAllCaps="false"
+        android:textColor="#ffff"
+        android:textSize="17dp" />
+
+
+</RelativeLayout>
