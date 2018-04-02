@@ -19,6 +19,7 @@ public class loadingChat extends AppCompatActivity {
     static GifImageView chatLoad;
     static GifImageView loading;
     static TextView lookFor;
+    static String my_emo_my_username;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -60,6 +61,8 @@ public class loadingChat extends AppCompatActivity {
         gif.execute("https://thumbs.gfycat.com/AnxiousElegantCarp-max-1mb.gif");
         chatLoad.startAnimation();
         chatLoad.setVisibility(View.VISIBLE);
+
+        my_emo_my_username = "username: " + username + ", emotion: " + my_emo;
         String msg;
         MyTaskParams.Client my_client = new MyTaskParams.Client(loadingChat.this);
         msg = my_client.Go(username, my_emo);

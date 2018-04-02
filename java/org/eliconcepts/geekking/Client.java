@@ -5,13 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.CountDownTimer;
-import android.preference.PreferenceManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -22,18 +17,15 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.Socket;
-import java.nio.ByteBuffer;
 import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static android.content.Context.MODE_PRIVATE;
-import static org.eliconcepts.geekking.WelcomeActivity.counter;
-import static org.eliconcepts.geekking.WelcomeActivity.loadingGif;
+//import static org.eliconcepts.geekking.WelcomeActivity.counter;
+//import static org.eliconcepts.geekking.WelcomeActivity.loadingGif;
 import static org.eliconcepts.geekking.loadingChat.chatLoad;
 import static org.eliconcepts.geekking.loadingChat.loading;
 import static org.eliconcepts.geekking.loadingChat.lookFor;
-
 
 class MyTaskParams {
 
@@ -61,7 +53,6 @@ class MyTaskParams {
             activityReference = new WeakReference<>(c);
         }
 
-
         String signup(String username, String password, String Email) {
             String msg;
             msg = "SignUp: {\"username\": \"" + username + "\", \"password\": \"" +
@@ -75,20 +66,19 @@ class MyTaskParams {
             return msg;
         }
 
-        String Image(byte[] imgBytes) throws UnsupportedEncodingException {
-            String msg;
-            //for(byte b : imgBytes){
-            //}
-            String str = new String(imgBytes);
-            msg = "Image_face: {\"data\": \"" + str + "\"}";
-            return msg;
-        }
-
         String Go(String username, String my_emo) {
             String msg;
             msg = "GoChat: {\"" + username + "\": [\"" + my_emo + "\", \"" + my_emo + "\"]}";
             return msg;
         }
+
+        String Chat(String sender, String receiver, String message) {
+            //the final result: Chat: {"username_of_sender": ["username_of_receiver", "message"]}
+            String msg;
+            msg = "Chat: {\"" + sender + "\": [\"" + receiver + "\", \"" + message + "\"]}";
+            return msg;
+        }
+
 
         @Override
         protected String doInBackground(MyTaskParams... params) {
@@ -123,28 +113,12 @@ class MyTaskParams {
                 if (res.equals("LoginTrue")) {
                     return "TrueLogin: " + username;
                 }
-                if (res.equals("LoginFalse")) {
-                    return "FalseLogin";
-                }
                 if (res.equals("SignUpTrue")) {
                     return "TrueSignUp: " + username;
                 }
-                if (res.equals("SignUpFalse")) {
-                    return "FalseSignUp";
-                }
-                if (res.contains("Emotion")) {
+                else{
                     return res;
                 }
-                if (res.equals("ImageFalse")){
-                    return "ImageFalse";
-                }
-                if (res.equals("ThreadFalse")){
-                    return res;
-                }
-                if (res.contains("Thread")){
-                    return res;
-                }
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -175,7 +149,7 @@ class MyTaskParams {
                 Ed.apply();
             }
 
-            if (data.equals("FalseLogin")) {
+            if (data.equals("LoginFalse")) {
                 Toast.makeText(c, "Wrong password or Username",
                         Toast.LENGTH_LONG).show();
             }
@@ -198,7 +172,7 @@ class MyTaskParams {
                 Ed.apply();
             }
 
-            if (data.equals("FalseSignUp")) {
+            if (data.equals("SignUpFalse")) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
 
                 // set title
@@ -221,8 +195,8 @@ class MyTaskParams {
                 alertDialog.show();
             }
             if (data.equals("ImageFalse")){
-                loadingGif.setVisibility(View.GONE);
-                counter.setText("");
+//                loadingGif.setVisibility(View.GONE);
+//                counter.setText("");
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
                 alertDialogBuilder.setTitle("We had some trouble to find face in this pic");
                 alertDialogBuilder
@@ -238,8 +212,8 @@ class MyTaskParams {
             }
 
             if (data.contains("Emotion")){
-                counter.setText("");
-                loadingGif.setVisibility(View.GONE);
+//                counter.setText("");
+//                loadingGif.setVisibility(View.GONE);
                 Pattern p = Pattern.compile("Emotion: (.*)");
                 Matcher m = p.matcher(data);
                 String emo ="";
@@ -311,6 +285,23 @@ class MyTaskParams {
             if (data.contains("Thread") && !data.equals("ThreadFalse")){
                 Intent intent = new Intent(c, Chat.class);
                 intent.putExtra("USER_MATCH", data);
+                c.startActivity(intent);
+            }
+
+            //Chat: {"username_of_sender": "message"}
+            if (data.contains("Chat")){
+                Pattern p = Pattern.compile("Chat: (.*), (.*)");
+                Matcher m = p.matcher(data);
+                String username ="";
+                String msg = "";
+                if(m.find()){
+                    MatchResult mr = m.toMatchResult();
+                    username = mr.group(1);
+                    msg = mr.group(2);
+                }
+                String extra = "username: " + username + ", msg: " + msg;
+                Intent intent = new Intent(c, Chat.class);
+                intent.putExtra("NEW_MESSAGE", extra);
                 c.startActivity(intent);
             }
         }

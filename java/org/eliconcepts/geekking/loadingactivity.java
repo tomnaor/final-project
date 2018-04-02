@@ -12,6 +12,10 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
 import android.widget.ImageView;
 
+import java.io.IOException;
+
+import static org.eliconcepts.geekking.R.id.loading;
+
 public class loadingactivity extends Activity {
 
     /** Duration of wait **/
@@ -26,6 +30,7 @@ public class loadingactivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.loading);
+
 
         imgview = (ImageView) findViewById(R.id.logo);
         img2 = (ImageView) findViewById(R.id.faceit);

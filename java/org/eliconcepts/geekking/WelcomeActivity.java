@@ -61,7 +61,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private Button takePictureButton;
     private Button chatButton;
     private TextureView textureView;
-    private ImageButton settings;
+//    private ImageButton settings;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
 
     static {
@@ -83,8 +83,8 @@ public class WelcomeActivity extends AppCompatActivity {
     private boolean mFlashSupported;
     private Handler mBackgroundHandler;
     private HandlerThread mBackgroundThread;
-    static TextView counter;
-    static GifImageView loadingGif;
+//    static TextView counter;
+//    static GifImageView loadingGif;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -95,69 +95,61 @@ public class WelcomeActivity extends AppCompatActivity {
         textureView.setSurfaceTextureListener(textureListener);
         takePictureButton = (Button) findViewById(R.id.btn_takepicture);
         assert takePictureButton != null;
-        settings = (ImageButton) findViewById(R.id.settings);
-        counter = (TextView) findViewById(R.id.counter);
-        loadingGif = (GifImageView) findViewById(R.id.loadingGif);
-        Gif gif = new Gif(loadingGif);
-        gif.execute("https://thumbs.gfycat.com/LivelyBrilliantAllensbigearedbat-size_restricted.gif");
+//        settings = (ImageButton) findViewById(R.id.settings);
+//        counter = (TextView) findViewById(R.id.counter);
+//        loadingGif = (GifImageView) findViewById(R.id.loadingGif);
+//        Gif gif = new Gif(loadingGif);
+//        gif.execute("https://thumbs.gfycat.com/LivelyBrilliantAllensbigearedbat-size_restricted.gif");
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CountDownTimer myCountDown = new CountDownTimer(3000, 100) {
-                    public void onTick(long millisUntilFinished) {
-                        //update the UI with the new count
-                        String a = "seconds remaining: " + (millisUntilFinished / 1000 + 1);
-                        counter.setText(String.format(a, ""));
-                    }
-
-                    public void onFinish() {
-                        String text = "Captured!";
-                        counter.setText(String.format(text, ""));
-                        takePicture();
-                        loadingGif.startAnimation();
-                        loadingGif.setVisibility(View.VISIBLE);
-                    }
-                };
-                myCountDown.start();
+//                CountDownTimer myCountDown = new CountDownTimer(3000, 100) {
+//                    public void onTick(long millisUntilFinished) {
+//                        //update the UI with the new count
+//                        String a = "seconds remaining: " + (millisUntilFinished / 1000 + 1);
+//                        counter.setText(String.format(a, ""));
+//                    }
+//
+//                    public void onFinish() {
+//                        String text = "Captured!";
+//                        counter.setText(String.format(text, ""));
+//                        takePicture();
+//                        loadingGif.startAnimation();
+//                        loadingGif.setVisibility(View.VISIBLE);
+//                    }
+//                };
+//                myCountDown.start();
+                takePicture();
             }
         });
-        chatButton = (Button) findViewById(R.id.chat_button);
-        chatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(WelcomeActivity.this, chatHistory.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                startActivity(intent);
-            }
-        });
-        settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(WelcomeActivity.this);
-                alertDialogBuilder.setTitle("Settings");
-                alertDialogBuilder
-                        .setMessage("Do you want to log out?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes, I'm Sure", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                SharedPreferences sp = getSharedPreferences("Login", MODE_PRIVATE);
-                                SharedPreferences.Editor Ed=sp.edit();
-                                Ed.putString("Unm", "0" );
-                                Ed.putString("Psw", "0");
-                                Ed.apply();
-                                Intent intent = new Intent(WelcomeActivity.this, tryactivity.class);
-                                startActivity(intent);
-                            }
-                        })
-                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog,int id) {
-                                dialog.cancel();
-                            }
-                        });
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
-            }
-        });
+//        settings.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(WelcomeActivity.this);
+//                alertDialogBuilder.setTitle("Settings");
+//                alertDialogBuilder
+//                        .setMessage("Do you want to log out?")
+//                        .setCancelable(false)
+//                        .setPositiveButton("Yes, I'm Sure", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                SharedPreferences sp = getSharedPreferences("Login", MODE_PRIVATE);
+//                                SharedPreferences.Editor Ed=sp.edit();
+//                                Ed.putString("Unm", "0" );
+//                                Ed.putString("Psw", "0");
+//                                Ed.apply();
+//                                Intent intent = new Intent(WelcomeActivity.this, tryactivity.class);
+//                                startActivity(intent);
+//                            }
+//                        })
+//                        .setNegativeButton("No",new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog,int id) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//                AlertDialog alertDialog = alertDialogBuilder.create();
+//                alertDialog.show();
+//            }
+//        });
     }
 
     TextureView.SurfaceTextureListener textureListener = new TextureView.SurfaceTextureListener() {

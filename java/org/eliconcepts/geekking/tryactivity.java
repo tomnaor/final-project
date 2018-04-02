@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class tryactivity extends AppCompatActivity {
     private Button b_login, b_signup;
     private EditText editname, editpass;
