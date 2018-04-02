@@ -35,7 +35,7 @@ class Server():
         self.listen_num = listen_num
         self.server_socket = socket.socket()
         self.go_users = database_go.Go()
-        # thread.start_new_thread(run_go, ())
+        thread.start_new_thread(run_go, ())
 
     def server_connection(self):
         """
@@ -233,16 +233,21 @@ class Server():
                                 emotion2 = go_dict.items()[1][1]
                                 for key, value in open_sockets_names.iteritems():
                                     if user_name1 == value:
-                                        output = "Thread: [\"" + user_name2 + "\"," + emotion2 + "\"]"
+                                        output = "Thread: " + user_name2 + ", " + emotion2
+                                        print output
                                         key.send(self.handle_msg(output))
                                     if user_name2 == value:
-                                        output = "Thread: [\"" + user_name1 + "\"  ," + emotion1 + "\"]"
+                                        output = "Thread: " + user_name1 + ", " + emotion1
+                                        print output
                                         key.send(self.handle_msg(output))
                             except Exception as e:
                                 print e.args
                     elif "Chat" in data:
                         chat = client_chat.Chat(data)
                         receiver_name, msg = chat.build_message()
+                        for key, value in open_sockets_names.iteritems():
+                                    if receiver_name == value:
+                                        key.send(self.handle_msg(msg).encode('utf8'))
                         print msg
                     else:
                         pass

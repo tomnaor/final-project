@@ -12,7 +12,7 @@ class Chat():
         """
          take the data - 'Chat: {"username_of_sender": ["username_of_receiver", "message"]}'
          and return a message for the receiver client
-         the message is  - 'Chat: {"username_of_sender": "message"}'
+         the message is  - 'Chat: username_of_sender, message'
         """
         regex = r"Chat:(.*)"
         match = re.search(regex, self.data)
@@ -23,7 +23,7 @@ class Chat():
         if access:
             receiver_name = msg_dict.items()[0][1][0]
             message = msg_dict.items()[0][1][1]
-            new_message = receiver_name, "Chat: {\"" + sender_name + "\": \"" + message + "\"}"
+            new_message = receiver_name, "Chat: " + sender_name + ", " + message
             return new_message
         else:
             return False
