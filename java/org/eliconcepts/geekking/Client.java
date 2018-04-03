@@ -21,11 +21,7 @@ import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import static android.content.Context.MODE_PRIVATE;
-//import static org.eliconcepts.geekking.WelcomeActivity.counter;
-//import static org.eliconcepts.geekking.WelcomeActivity.loadingGif;
-import static org.eliconcepts.geekking.loadingChat.chatLoad;
-import static org.eliconcepts.geekking.loadingChat.loading;
-import static org.eliconcepts.geekking.loadingChat.lookFor;
+import static org.eliconcepts.geekking.WelcomeActivity.loading;
 
 class MyTaskParams {
 
@@ -195,8 +191,7 @@ class MyTaskParams {
                 alertDialog.show();
             }
             if (data.equals("ImageFalse")){
-//                loadingGif.setVisibility(View.GONE);
-//                counter.setText("");
+                loading.setVisibility(View.GONE);
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
                 alertDialogBuilder.setTitle("We had some trouble to find face in this pic");
                 alertDialogBuilder
@@ -212,8 +207,7 @@ class MyTaskParams {
             }
 
             if (data.contains("Emotion")){
-//                counter.setText("");
-//                loadingGif.setVisibility(View.GONE);
+                loading.setVisibility(View.GONE);
                 Pattern p = Pattern.compile("Emotion: (.*)");
                 Matcher m = p.matcher(data);
                 String emo ="";
@@ -244,7 +238,7 @@ class MyTaskParams {
                             .setCancelable(false)
                             .setPositiveButton("Face it", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
-                                    Intent intent = new Intent(c, loadingChat.class);
+                                    Intent intent = new Intent(c, MainActivity.class);
                                     intent.putExtra("MY_EMO", finalEmo);
                                     c.startActivity(intent);
                                 }
@@ -260,9 +254,9 @@ class MyTaskParams {
             }
 
             if (data.equals("ThreadFalse")){
-                chatLoad.setVisibility(View.GONE);
-                loading.setVisibility(View.GONE);;
-                lookFor.setText("");
+                //chatLoad.setVisibility(View.GONE);
+                //loading.setVisibility(View.GONE);;
+                //lookFor.setText("");
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(c);
                 //LayoutInflater factory = LayoutInflater.from(c);
