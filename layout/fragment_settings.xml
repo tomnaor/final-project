@@ -25,6 +25,15 @@
         tools:context="abhiandroid.com.listexample.MainActivity">
     </ListView>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:id="@+id/textView2"
+        android:textSize="20sp"
+        android:textColor="@color/white" />
+
+
     <ImageView
         android:id="@+id/faceit"
         android:layout_width="140dp"
